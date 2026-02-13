@@ -1,11 +1,11 @@
 # **Лабораторная работа №2**
 ## Установка и первая программа на PHP
 Открываем XAMPP , запускаем **Apache**, **MySQL** **phpMyAdmin**
-![alt text](image-1.png)
-![alt text](image.png)
+![alt text](images/image-1.png)
+![alt text](images/image.png)
 
 ## Сервер работает корректно
-![alt text](image-3.png)
+![alt text](images/image-3.png)
 
 ## Первая программа
 ```php
@@ -13,7 +13,7 @@
     echo "Hello world!";
 ```
 
-![alt text](image-4.png)
+![alt text](images/image-4.png)
 
 
 ```php
@@ -21,7 +21,7 @@
     echo "Hello, World with echo!";
     print "Hello, World with print!";
 ```
-![alt text](image-5.png)
+![alt text](images/image-5.png)
 
 ```php
 <!DOCTYPE html>
@@ -52,7 +52,7 @@
 
 ```
 
-![alt text](image-6.png)
+![alt text](images/image-6.png)
 
 ## Контрольные вопросы
 - Какие способы установки PHP существуют?
