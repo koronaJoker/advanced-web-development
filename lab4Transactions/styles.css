@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+* {
+    font-family: JetBrains Mono, sans-serif;
+}
+
+
+.menu ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+}
+
+.menu ul li {
+    list-style-type: none;
+}
+
+.menu ul li a {
+    display: block;
+    transition:all 0.3s ease;
+    text-decoration: none;
+    color: #000;
+
+}
+
+.menu ul li a:hover {
+    text-decoration: none;
+    color: #21fcf5;
+    transform: scale(1.2);
+    margin:0 10px;
+}
+.content {
+    margin: 0 auto;
+    display: flex;
+    width: 80vw;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap:1rem;
+}
+
+.image {
+    transition:all 0.3s ease;
+    display: block;
+    width: 300px;
+    height: 300px;
+    background-position: center;
+    background-size: 100%;
+}
+.image:hover {
+    cursor: pointer;
+    transition:all 0.3s ease;
+    background-size: 120%;
+}
+
+.container {
+    margin: 0 60px;
+}
+
+li {
+    font-weight: bold;
+
+}
+
+li > pre {
+    font-weight: normal;
+    font-style: italic;
+    color: #444;
+}
+
+table {
+    border-collapse: collapse;
+    width: 70%;
+    margin: 20px auto;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
