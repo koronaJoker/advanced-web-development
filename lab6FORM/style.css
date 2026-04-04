@@ -1,0 +1,162 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #f7f7f7;
+    font-family: JetBrains Mono, monospace;
+}
+
+form {
+    width: 60%;
+    margin: 50px auto;
+    padding: 30px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+input[type="text"],
+input[type="date"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input[type="color"] {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    margin-right: 5px;
+    margin-left: 10px;
+}
+
+input[type="radio"]:first-child {
+    margin-left: 0;
+}
+
+input[type="submit"] {
+    transition: all 0.2s ease;
+    background-color: #fff;
+    color: #000;
+    padding: 10px 30px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #2057fa;
+    color: #fff;
+}
+
+input[type="submit"]:active {
+    background-color: #2057fa;
+    color: #fff;
+    transform: scale(0.95);
+}
+
+.error {
+    background: #ffe5e5;
+    color: #cc0000;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ffb3b3;
+    border-radius: 4px;
+}
+
+.input-error {
+    border: 1px solid red;
+}
+
+/* Стили для таблицы автопарка */
+table {
+    width: 60%;
+    margin: 30px auto;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden; /* чтобы закругления работали */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 16px;
+}
+
+th {
+    background-color: #f0f0f0;
+    font-weight: 600;
+}
+
+tr:hover {
+    background-color: #f5faff;
+}
+
+td:first-child, th:first-child {
+    border-left: none;
+}
+
+td:last-child, th:last-child {
+    border-right: none;
+}
+
+/* Цвет ячейки для цвета авто */
+td[style*="background"] {
+    width: 50px;
+    text-align: center;
+}
+
+th a {
+    text-decoration: none;
+    color: #000;
+}
+
+th a::after {
+    content: '';
+    display: inline-block;
+    margin-left: 5px;
+}
+
+th a.asc::after {
+    content: '▲';
+    font-size: 0.7em;
+    color: #2057fa;
+}
+
+th a.desc::after {
+    content: '▼';
+    font-size: 0.7em;
+    color: #2057fa;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 30px;
+}
