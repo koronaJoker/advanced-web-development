@@ -1,0 +1,32 @@
+[
+    {
+        "id": "69d8a5748fd3f",
+        "model": "xFive",
+        "brand": "BMW",
+        "release_date": "2014-02-05",
+        "color": "#422ea3",
+        "fuel": "Petrol",
+        "description": "just a car",
+        "created_at": "2026-04-10"
+    },
+    {
+        "id": "69d8a5c5ab29e",
+        "model": "banan",
+        "brand": "mercedes",
+        "release_date": "2021-06-08",
+        "color": "#ffdd00",
+        "fuel": "Petrol",
+        "description": "banana monkey",
+        "created_at": "2026-04-10"
+    },
+    {
+        "id": "69d8a6850de61",
+        "model": "V_eight",
+        "brand": "auti",
+        "release_date": "2026-04-10",
+        "color": "#ff0000",
+        "fuel": "Electric",
+        "description": "electro",
+        "created_at": "2026-04-10"
+    }
+]

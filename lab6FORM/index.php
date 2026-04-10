@@ -1,278 +1,16 @@
 <?php
-// -------------------- Validators --------------------
+require_once 'handlers/handle_form.php';
+require_once 'handlers/handle_delete.php';
+require_once 'helpers/sort.php';
 
-/**
- * Interface for all validators
- */
-interface ValidatorInterface {
-    /**
-     * Validate given value
-     * @param mixed $value
-     * @return bool
-     */
-    public function validate($value): bool;
+$file = __DIR__ . '/storage/data.json';
 
-    /**
-     * Get validation error message
-     * @return string
-     */
-    public function getError(): string;
-}
+$cars = file_exists($file)
+    ? json_decode(file_get_contents($file), true)
+    : [];
 
-/**
- * Validator for required fields
- */
-class RequiredValidator implements ValidatorInterface {
-    private $error = '';
-    private $fieldName;
-
-    /**
-     * @param string $fieldName
-     */
-    public function __construct($fieldName) {
-        $this->fieldName = $fieldName;
-    }
-
-    /**
-     * @param mixed $value
-     * @return bool
-     */
-    public function validate($value): bool {
-        if (empty(trim($value))) {
-            $this->error = "{$this->fieldName} is required";
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * @return string
-     */
-    public function getError(): string {
-        return $this->error;
-    }
-}
-
-/**
- * Validator to prevent numbers in string
- */
-class NoNumbersValidator implements ValidatorInterface {
-    private $error = '';
-    private $fieldName;
-
-    /**
-     * @param string $fieldName
-     */
-    public function __construct($fieldName) {
-        $this->fieldName = $fieldName;
-    }
-
-    /**
-     * @param string $value
-     * @return bool
-     */
-    public function validate($value): bool {
-        if (preg_match('/\d/', $value)) {
-            $this->error = "{$this->fieldName} must not contain numbers";
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * @return string
-     */
-    public function getError(): string {
-        return $this->error;
-    }
-}
-
-// -------------------- Form class --------------------
-
-/**
- * Handles car form data, validation and storage
- */
-class CarForm {
-    private $data = [];
-    private $errors = [];
-    private $validators = [];
-
-    /**
-     * @param array $postData
-     */
-    public function __construct($postData) {
-        $this->data = $postData;
-        $this->setupValidators();
-    }
-
-    /**
-     * Initialize validators for each field
-     * @return void
-     */
-    private function setupValidators() {
-        $this->validators = [
-            'car-model' => [new RequiredValidator("Model"), new NoNumbersValidator("Model")],
-            'car-brand' => [new RequiredValidator("Brand")],
-            'car-data' => [new RequiredValidator("Release Date")],
-            'car-color' => [new RequiredValidator("Color")],
-            'car-fuel' => [new RequiredValidator("Fuel")],
-            'car-description' => [new RequiredValidator("Description")]
-        ];
-    }
-
-    /**
-     * Validate all form fields
-     * @return bool
-     */
-    public function validate(): bool {
-        $valid = true;
-
-        foreach ($this->validators as $field => $fieldValidators) {
-            foreach ($fieldValidators as $validator) {
-                if (!$validator->validate($this->data[$field] ?? '')) {
-                    $this->errors[$field] = $validator->getError();
-                    $valid = false;
-                    break;
-                }
-            }
-        }
-
-        return $valid;
-    }
-
-    /**
-     * Get validation errors
-     * @return array
-     */
-    public function getErrors(): array {
-        return $this->errors;
-    }
-
-    /**
-     * Save form data to JSON file
-     * @param string $filename
-     * @return void
-     */
-    public function save($filename = "data.json") {
-        $existing = [];
-
-        if (file_exists($filename)) {
-            $existing = json_decode(file_get_contents($filename), true) ?: [];
-        }
-
-        $existing[] = [
-            'id' => uniqid(),
-            'model' => $this->data['car-model'],
-            'brand' => $this->data['car-brand'],
-            'release_date' => $this->data['car-data'],
-            'color' => $this->data['car-color'],
-            'fuel' => $this->data['car-fuel'],
-            'description' => $this->data['car-description'],
-            'created_at' => date("Y-m-d")
-        ];
-
-        file_put_contents($filename, json_encode($existing, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-    }
-}
-
-// -------------------- Delete --------------------
-
-/**
- * Delete car by ID from JSON storage
- * @return void
- */
-if (isset($_GET['delete'])) {
-    $idToDelete = $_GET['delete'];
-
-    $cars = [];
-    if (file_exists("data.json")) {
-        $cars = json_decode(file_get_contents("data.json"), true) ?: [];
-    }
-
-    $cars = array_filter($cars, function($car) use ($idToDelete) {
-        return $car['id'] !== $idToDelete;
-    });
-
-    file_put_contents("data.json", json_encode(array_values($cars), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit;
-}
-
-// -------------------- Form processing --------------------
-
-$errorMessages = [];
-
-/**
- * Handle form submission
- */
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $form = new CarForm($_POST);
-
-    if ($form->validate()) {
-        $form->save();
-        header("Location: " . $_SERVER['PHP_SELF'] . "?success=1");
-        exit;
-    } else {
-        $errorMessages = $form->getErrors();
-    }
-}
-
-// -------------------- Messages --------------------
-
-/**
- * Success message
- * @var string
- */
-$successMessage = '';
-
-if (isset($_GET['success'])) {
-    $successMessage = "Data saved successfully!";
-}
-
-// -------------------- Load data --------------------
-
-/**
- * @var array
- */
-$cars = [];
-
-if (file_exists("data.json")) {
-    $cars = json_decode(file_get_contents("data.json"), true);
-}
-
-// -------------------- Sorting --------------------
-
-/**
- * @var string
- */
-$sortField = $_GET['sort'] ?? 'created_at';
-
-/**
- * @var string
- */
-$sortOrder = $_GET['order'] ?? 'asc';
-
-/**
- * Sort cars array by field and order
- */
 if (!empty($cars)) {
-    usort($cars, function($a, $b) use ($sortField, $sortOrder) {
-        $result = ($a[$sortField] ?? '') <=> ($b[$sortField] ?? '');
-        return $sortOrder === 'asc' ? $result : -$result;
-    });
-}
-
-/**
- * Get sort arrow for UI
- * @param string $field
- * @param string $sortField
- * @param string $sortOrder
- * @return string
- */
-function sortClass($field, $sortField, $sortOrder) {
-    if ($field !== $sortField) return '';
-    return $sortOrder === 'asc' ? '↑' : '↓';
+    sortCars($cars, $sortField, $sortOrder);
 }
 ?>
 
@@ -319,13 +57,14 @@ function sortClass($field, $sortField, $sortOrder) {
 <h2>Список</h2>
 <table>
 <tr>
-<th>Brand</th>
-<th>Model</th>
-<th>Release</th>
+<tr>
+<th><?= sortLink('brand', 'Brand', $sortField, $sortOrder) ?></th>
+<th><?= sortLink('model', 'Model', $sortField, $sortOrder) ?></th>
+<th><?= sortLink('release_date', 'Release', $sortField, $sortOrder) ?></th>
 <th>Color</th>
-<th>Fuel</th>
+<th><?= sortLink('fuel', 'Fuel', $sortField, $sortOrder) ?></th>
 <th>Description</th>
-<th>Created</th>
+<th><?= sortLink('created_at', 'Created', $sortField, $sortOrder) ?></th>
 <th>Action</th>
 </tr>
 
