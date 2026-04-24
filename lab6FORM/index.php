@@ -23,21 +23,24 @@ if (!empty($cars)) {
 </head>
 <body>
 
-<h2>Добавление автомобиля</h2>
+<header>
+    <h2>Добавление автомобиля</h2>
 
-<?php if ($successMessage): ?>
-<div class="success"><?= $successMessage ?></div>
-<?php endif; ?>
+    <?php if ($successMessage): ?>
+    <div class="success"><?= $successMessage ?></div>
+    <?php endif; ?>
 
-<?php if (!empty($errorMessages)): ?>
-<div class="error">
-<ul>
-<?php foreach ($errorMessages as $error): ?>
-<li><?= $error ?></li>
-<?php endforeach; ?>
-</ul>
-</div>
-<?php endif; ?>
+    <?php if (!empty($errorMessages)): ?>
+    <div class="error">
+    <ul>
+    <?php foreach ($errorMessages as $error): ?>
+    <li><?= $error ?></li>
+    <?php endforeach; ?>
+    </ul>
+    </div>
+    <?php endif; ?>
+
+</header>
 
 <form method="post">
     <input type="text" name="car-model" placeholder="Model" required>
@@ -54,33 +57,33 @@ if (!empty($cars)) {
 </form>
 
 <?php if (!empty($cars)): ?>
-<h2>Список</h2>
-<table>
-<tr>
-<tr>
-<th><?= sortLink('brand', 'Brand', $sortField, $sortOrder) ?></th>
-<th><?= sortLink('model', 'Model', $sortField, $sortOrder) ?></th>
-<th><?= sortLink('release_date', 'Release', $sortField, $sortOrder) ?></th>
-<th>Color</th>
-<th><?= sortLink('fuel', 'Fuel', $sortField, $sortOrder) ?></th>
-<th>Description</th>
-<th><?= sortLink('created_at', 'Created', $sortField, $sortOrder) ?></th>
-<th>Action</th>
-</tr>
+    <h2>Список</h2>
+    <table>
+    <tr>
+    <tr>
+    <th><?= sortLink('brand', 'Brand', $sortField, $sortOrder) ?></th>
+    <th><?= sortLink('model', 'Model', $sortField, $sortOrder) ?></th>
+    <th><?= sortLink('release_date', 'Release', $sortField, $sortOrder) ?></th>
+    <th>Color</th>
+    <th><?= sortLink('fuel', 'Fuel', $sortField, $sortOrder) ?></th>
+    <th>Description</th>
+    <th><?= sortLink('created_at', 'Created', $sortField, $sortOrder) ?></th>
+    <th>Action</th>
+    </tr>
 
-<?php foreach ($cars as $car): ?>
-<tr>
-<td><?= htmlspecialchars($car['brand']) ?></td>
-<td><?= htmlspecialchars($car['model']) ?></td>
-<td><?= htmlspecialchars($car['release_date']) ?></td>
-<td style="background: <?= htmlspecialchars($car['color']) ?>"></td>
-<td><?= htmlspecialchars($car['fuel']) ?></td>
-<td><?= htmlspecialchars($car['description']) ?></td>
-<td><?= htmlspecialchars($car['created_at']) ?></td>
-<td>
-<a href="?delete=<?= htmlspecialchars($car['id']) ?>" onclick="return confirm('Удалить?')">❌</a>
-</td>
-</tr>
+    <?php foreach ($cars as $car): ?>
+    <tr>
+    <td><?= htmlspecialchars($car['brand']) ?></td>
+    <td><?= htmlspecialchars($car['model']) ?></td>
+    <td><?= htmlspecialchars($car['release_date']) ?></td>
+    <td style="background: <?= htmlspecialchars($car['color']) ?>"></td>
+    <td><?= htmlspecialchars($car['fuel']) ?></td>
+    <td><?= htmlspecialchars($car['description']) ?></td>
+    <td><?= htmlspecialchars($car['created_at']) ?></td>
+    <td>
+    <a href="?delete=<?= htmlspecialchars($car['id']) ?>" onclick="return confirm('Удалить?')">❌</a>
+    </td>
+    </tr>
 <?php endforeach; ?>
 </table>
 <?php endif; ?>

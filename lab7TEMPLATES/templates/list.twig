@@ -1,0 +1,40 @@
+<table>
+    <caption>{{caption|upper}}</caption>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Сумма</th>
+            <th>Дата и время</th>
+            <th>Категория</th>
+            <th>Описание</th>
+            <th>{{ delete_text() }}</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% if transactions is empty %}
+            <tr>
+                <td colspan="6">Нет транзакций</td>
+            </tr>
+        {% else %}
+            {% for transaction in transactions %}
+                <tr class="{{ transaction.amount >= 0 ? 'positive' : 'negative' }}"
+                    data-id="{{ transaction.id }}">
+                    <td>{{ transaction.id }}</td>
+                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.date }}</td>
+                    <td>{{ transaction.category }}</td>
+                    <td>{{ transaction.description }}</td>
+                    <td>
+                        <button>
+                            <a class="delete-btn"
+                               href="src/handler.php?action=delete&id={{ transaction.id|url_encode }}">
+                                {{ delete_text() }}
+                            </a>
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
